@@ -33,7 +33,34 @@ export function Home() {
   }
 
   function handleRemoveTask(id: number) {
-    const newTaskList = tasks.filter(task => task.id !== id);
+    Alert.prompt('Remover item', 
+    'Tem certeza que você deseja remover esse item?',
+    [
+      {
+        text: 'Não',
+        onPress: () => {},
+      },
+      {
+        text: 'Sim',
+        onPress: () => {
+          const newTaskList = tasks.filter(task => task.id !== id);
+          setTasks(newTaskList);
+        },
+      }
+    ]
+    )    
+  }
+
+  function HandleEditTask( taskId: number, taskNewTitle: string ) {
+    const newTaskList = tasks.map(task => {
+      if (task.id === taskId) {
+        return {
+          ...task,
+          title: taskNewTitle,
+        };
+      };
+      return task;
+    })
     setTasks(newTaskList);
   }
 
@@ -46,7 +73,8 @@ export function Home() {
       <TasksList 
         tasks={tasks} 
         toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
+        removeTask={handleRemoveTask}
+        editTask={HandleEditTask} 
       />
     </View>
   )
